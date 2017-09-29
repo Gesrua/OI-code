@@ -8,10 +8,13 @@ int main(){
   far = 0;
   for (i=0;i<m;i++){
     std::cin >> s >> v;
-    for (j=s;j<=t;j++){
-      dp[j] = std::max(dp[j], dp[j-s] + v);
+    for (j=0;j<=t-s;j++){
+      if (dp[j] != -1){
+        dp[j+s] = std::max(dp[j+s], dp[j] + v);
+        ans = std::max(dp[j+s], ans);
+      }
     }
   }
-  std::cout << dp[t];
+  std::cout << ans;
   return 0;
 }
