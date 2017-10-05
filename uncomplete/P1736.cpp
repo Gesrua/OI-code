@@ -8,14 +8,14 @@ void init() {
     memset(dp,0,sizeof(dp));
     int i,j,temp;
     cin>>n>>m;
-    for (i=0;i<n;i++)
-        for (j=0;j<m;j++) {
+    for (i=0; i<n; i++)
+        for (j=0; j<m; j++) {
             cin>>temp;
             if (temp == 1) a[i][j] = true;
         }
 }
 int main() {
     init();
-    
+
     return 0;
 }

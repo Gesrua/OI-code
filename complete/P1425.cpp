@@ -1,11 +1,11 @@
 #include <iostream>
-struct time{
+struct time {
     int h,m;
 };
 int main() {
     struct time start,end;
     std::cin >> start.h >> start.m >> end.h >> end.m;
-    if (start.m > end.m){
+    if (start.m > end.m) {
         end.h--;
         end.m += 60;
     }

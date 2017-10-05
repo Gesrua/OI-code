@@ -3,7 +3,7 @@ int a,n,m,x;
 int fibo[22] = {0,1,1};
 void init() {
     int i;
-    for (i=3;i<22;i++)
+    for (i=3; i<22; i++)
         fibo[i] = fibo[i-2] + fibo[i-1];
     std::cin>>a>>n>>m>>x;
 }

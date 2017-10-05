@@ -3,8 +3,10 @@
 #include <cstring>
 struct node {
     long long a,b,c;
-}data[51];
-bool cmp(node x, node y) {return x.c * y.b < y.c * x.b;}
+} data[51];
+bool cmp(node x, node y) {
+    return x.c * y.b < y.c * x.b;
+}
 long long dp[51][200001];
 long long caculate(struct node a,long long t) {
     return a.a - (t + a.c) * a.b;
@@ -18,12 +20,12 @@ void solve(long long s,long long t) {
     if (dp[s][t] != -1) return;
     if (t > T) {dp[s][t] = 0; return;}
     /*
-    if (s == n && t+data[s].c <= T) {dp[s][t] = max(caculate(data[s],t),0); return;}
-    if (s == n) {dp[s][t] = 0;return;}
-    */
+       if (s == n && t+data[s].c <= T) {dp[s][t] = max(caculate(data[s],t),0); return;}
+       if (s == n) {dp[s][t] = 0;return;}
+     */
     if (s==n) {
         if (t+data[s].c <= T) {dp[s][t] = max(caculate(data[s],t),0); return;}
-        else {dp[s][t] = 0;return;}
+        else {dp[s][t] = 0; return;}
     }
     solve(s+1,t+data[s].c);
     solve(s+1,t);
@@ -35,9 +37,9 @@ int main() {
     long long i;
     std::memset(dp,-1,sizeof(dp));
     std::cin>>T>>n;
-    for (i=0;i<n;i++) std::cin>>data[i].a;
-    for (i=0;i<n;i++) std::cin>>data[i].b;
-    for (i=0;i<n;i++) std::cin>>data[i].c;
+    for (i=0; i<n; i++) std::cin>>data[i].a;
+    for (i=0; i<n; i++) std::cin>>data[i].b;
+    for (i=0; i<n; i++) std::cin>>data[i].c;
     std::sort(data,data+n,cmp);
     solve(0,0);
     std::cout<<dp[0][0];
