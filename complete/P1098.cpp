@@ -1,37 +1,47 @@
 #include <bits/stdc++.h>
-#define INF 2100000000
-int n, a[50000], ans = 0;
-void merge(int l, int mid, int r){
-    int i, j, k, ll = mid - l + 1, lr = r - mid, ar[20001], al[20001];
-    for (i=1;i<=ll;i++) al[i] = a[l+i-1];
-    al[i] = INF;
-    for (i=1;i<=lr;i++) ar[i] = a[mid + i];
-    ar[i] = INF;
-    for (i=1,j=1,k=l;k<=r;k++){
-        if (al[i] <= ar[j]){
-            a[k] = al[i];
-            i++;
-        }
-        else{
-            ans += ll - i + 1;
-            a[k] = ar[j];
-            j++;
-        }
-    }
+int p1, p2, p3;
+std::string s;
+int typ(char c){
+    if (c >= 'a' && c <= 'z') return 2;
+    if (c >= '0' && c <= '9') return 1;
+    return 0;
 }
-void mergeSort(int l, int r){
-    if (l<r){
-        int mid = (l + r) / 2;
-        mergeSort(l,mid);
-        mergeSort(mid+1, r);
-        merge(l, mid, r);
-    }
+void write(char c, int x){
+    for (int i=0; i<x; ++i) std::cout << c;
 }
-int main(int argc, char const *argv[]) {
-    std::cin >> n;
-    for (int i=1;i<=n;i++)
-        std::cin >> a[i];
-    mergeSort(1, n);
-    std::cout << ans;
+int main(){
+    using std::cout;
+    using std::string;
+    std::cin >> p1 >> p2 >> p3;
+    std::cin >> s;
+    int pos = 0, t1, t2;
+    cout << s[0];
+    int i = 1;
+    int end = s.size() - 1;
+    while (i != end){
+        if (s[i] == '-'){
+            t1 = typ(s[i-1]); t2 = typ(s[i+1]);
+            if (s[i-1]+1 == int(s[i+1])) {++i; continue;}
+            if (t1 != t2 || s[i-1] >= s[i+1] || t1 == 0 || t2 == 0){
+                cout << '-';
+                ++i;
+                continue;
+            }
+            if (p1 == 3){
+                write('*', (s[i+1] - s[i-1] - 1)*p2); 
+            }else{
+                char start, end, step;
+                if (p3 == 1) {start = s[i-1]+1;end=s[i+1];step = 1;}
+                else {start = s[i+1]-1; end = s[i-1];step = -1;}
+                if (p1 == 2 && t1 == 2) {start -= 'a' - 'A'; end -= 'a' - 'A';}
+                for (;start!=end;start = start + step){
+                    write(start, p2);
+                }
+
+            }
+        }else cout << s[i];
+        ++i;
+    }
+    cout << s[s.size()-1];
     return 0;
 }
