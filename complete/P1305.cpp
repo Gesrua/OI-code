@@ -15,6 +15,7 @@ int main(){
     bool root[256] = {}, vis[256]={};
     int n;
     char a, b, c;
+    cin >> n;
     for (int i=0; i<n; ++i){
         cin >> a >> b >> c;
         vis[a] = true;
