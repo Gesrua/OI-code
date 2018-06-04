@@ -1,67 +1,76 @@
-
-#include <bits/stdc++.h>
-int n ,m, a[103], dp[200][200][10], sum[200][200];
-int acc(const int l, const int r){
-  if (sum[l][r] != -1) return sum[l][r];
-  if (l == r) return a[l];
-  return sum[l][r] = acc(l,r-1) + a[r];
+// 在luogu的机器上不开O2,RE
+// 在luogu的机器上开O2, AC
+// 在自己机器上-O, -O2 都 AC
+// 玄学
+#include <iostream>
+#include <cmath>
+using std::min;
+using std::max;
+int n, m, a[102], dp[110][110][13] = {}, sum[110];
+using std::cin;
+using std::cout;
+using std::cerr;
+using std::endl;
+const int INF = 210000000;
+inline int query(int l, int r){
+    // [l, r]
+    if (l < 1) l = 1;
+    return ((sum[r] - sum[l-1]) % 10 + 10)%10;
 }
-inline int mod(int x){
-  return (x%10+10)%10;
+int dp_min(int l, int r, int k){
+    //cerr << l << ' ' << r << ' ' << k << endl;
+    if (dp[l][r][k] != INF) return dp[l][r][k];
+    if (k == 1){
+        return query(l, r);
+    }
+    for (int i = l; i < r-k+1; ++i){
+        dp[l][r][k] = min(dp_min(l, i, k - 1) * query(i + 1, r), dp[l][r][k]);
+    }
+    return dp[l][r][k];
 }
-int solve_max(const int l, const int r, const int k){
-  // std::cout << l << ' ' << r << ' ' << k << std::endl;
-  if (dp[l][r][k] != -1) return dp[l][r][k];
-  if (k == 0) {
-    return mod(acc(l,r));
-  }
-  int i, ans = 0;
-  for (i=l;i<r;i++){
-    ans = std::max(ans, mod(acc(l,i)) * solve_max(i+1,r,k-1));
-  }
-  return dp[l][r][k] = ans;
-}
-int solve_min(const int l, const int r, const int k){
-  // std::cout << l << ' ' << r << ' ' << k << std::endl;
-  if (dp[l][r][k] != -1) return dp[l][r][k];
-  if (k == 0) {
-    return mod(acc(l,r));
-  }
-  int i, ans = 21000000;
-  for (i=l;i<r;i++){
-    ans = std::min(ans, mod(acc(l,i)) * solve_min(i+1,r,k-1));
-    // std::cout << l << ' ' << r << ' ' << k << ' ';
-    // std::cout << mod(acc(l,i)) * solve_min(i+1,r,k-1) << '\n';
-  }
-  // std::cout << std::endl;
-  // std::cout << l << ' ' << r << ' ' << k << ' ' << ans << std::endl;
-  return dp[l][r][k] = ans;
+int dp_max(int l, int r, int k){
+    //cerr << l << ' ' << r << ' ' << k << endl;
+    if (dp[l][r][k] != 0) return dp[l][r][k];
+    if (k == 1){
+        return query(l, r);
+    }
+    for (int i = l; i < r; ++i){
+        dp[l][r][k] = max(dp_max(l, i, k - 1) * query(i + 1, r), dp[l][r][k]);
+    }
+    return dp[l][r][k];
 }
 int main(){
-  int i, ans = 0;
-  std::cin >> n >> m;
-  std::memset(sum,-1,sizeof(sum));
-  std::memset(dp,-1,sizeof(dp));
-  for (i=1;i<=n;i++){
-    std::cin >> a[i];
-    a[i+n] = a[i];
-  }
-  // for (i=1;i<=n*2;i++){
-  //   for (int j = i;j<=n*2;j++)
-  //     std::cout << i << ' ' << j << ' ' << acc(i,j) << std::endl;
-  // }
-  ans = 21000000;
-  for (i=1;i<=n;i++){
-    ans = std::min(solve_min(i,i+n-1,m-1), ans);
-  }
-  std::cout << ans << std::endl;
-  ans = 0;
-  std::memset(dp,-1,sizeof(dp));
-  for (i=1;i<=n;i++){
-    ans = std::max(solve_max(i,i+n-1,m-1), ans);
-  }
-  std::cout << ans << std::endl;
-  // std::cout << solve(4,7,1);
-  // std::cout << (acc(4,6)%10) * (a[7] % 10);
-  return 0;
+    std::ios::sync_with_stdio(false);
+    cin >> n >> m;
+    for (int i = 1; i <= n; ++i){
+        cin >> a[i];
+        a[i+n] = a[i];
+    }
+    sum[0] = 0;
+    sum[1] = a[1];
+    for (int j = 2; j <= (n<<2); ++j){
+        sum[j] = sum[j-1] + a[j];
+    }
+    int ans_max = 0;
+    for (int i = 1; i <= n; ++i){
+        ans_max = max(dp_max(i, i + n - 1, m), ans_max);
+    }
+    for (int i = 1; i <= n; ++i){
+        for (int j = i; j <= n<<2; ++j){
+            for (int k = 0; k <= m; ++k){
+                dp[i][j][k] = INF;
+            }
+        }
+    }
+    int ans_min = INF;
+    for (int i = 1; i <= n; ++i){
+        ans_min = min(dp_min(i, i + n - 1, m), ans_min);
+    }
+    cout << ans_min << endl << ans_max;
+    return 0;
 }
+// f[开始][结束][已经分的区间数量] = 乘积
+// f[i][j][k] = max/min{f[i][x][k-1] * sum(x+1, r) | i <= x < j}
+/*
+
+*/
