@@ -1,4 +1,5 @@
 now
 .DS_Store
 .vscode
-a.out
+*.out
+*.in
