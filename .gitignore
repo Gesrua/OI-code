@@ -3,3 +3,4 @@ now
 .vscode
 *.out
 *.in
+*.sh

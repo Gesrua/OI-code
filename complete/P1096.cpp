@@ -9,27 +9,27 @@ int main(){
 	a[1] = 1;
 	for (i = 2; i <= n; ++i){
 		// *2
-		for (j=1;j<=tot;++j)
+		for (j = 1; j <= tot; ++j)
 			a[j] *= 2;
 		++a[1];
-		for (j=1;j<=tot;++j){
-			a[j+1] = a[j+1] + a[j] / mod;
+		for (j = 1; j <= tot; ++j){
+			a[j + 1] = a[j + 1] + a[j] / mod;
 			a[j] %= mod;
 		}
-		if (a[tot+1] != 0) ++tot;
-		
+		if (a[tot + 1] != 0) ++tot;
+
 	}
-	
-	for (j=1;j<=tot;++j)
+
+	for (j = 1; j <= tot; ++j)
 		a[j] *= 2;
-	for (j=1;j<=tot;++j){
-		a[j+1] = a[j+1] + a[j] / mod;
+	for (j = 1; j <= tot; ++j){
+		a[j + 1] = a[j + 1] + a[j] / mod;
 		a[j] %= mod;
 	}
-	if (a[tot+1] != 0) ++tot;
-	for (i=tot;i>=1;i--){
+	if (a[tot + 1] != 0) ++tot;
+	for (i = tot; i >= 1; i--){
 		cout << a[i];
 	}
-	
+
 	return 0;
 }

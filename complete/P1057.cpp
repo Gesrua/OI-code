@@ -10,8 +10,8 @@ int right(int pos){
 }
 int solve(int pos, int k){
 	if (dp[pos][k] != -1) return dp[pos][k];
-	if (k == 0) return dp[pos][k] = pos==1?1:0; 
-	return dp[pos][k] = solve(left(pos), k-1) + solve(right(pos), k-1);
+	if (k == 0) return dp[pos][k] = pos == 1 ? 1 : 0;
+	return dp[pos][k] = solve(left(pos), k - 1) + solve(right(pos), k - 1);
 }
 int main(){
 	using std::cin;

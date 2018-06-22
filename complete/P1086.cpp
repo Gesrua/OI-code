@@ -9,7 +9,7 @@ struct cell
 	bool operator>(cell & CMP){
 		return p > CMP.p;
 	}
-}cache;
+} cache;
 std::vector<cell> v;
 void push(cell &S){
 	v.push_back(S);
@@ -26,8 +26,8 @@ void init(){
 	using std::cin;
 	int t;
 	cin >> m >> n >> k;
-	for (int i=1;i<=m;i++)
-		for (int j=1;j<=n;j++){
+	for (int i = 1; i <= m; i++)
+		for (int j = 1; j <= n; j++){
 			cin >> cache.p;
 			if (cache.p == 0) continue;
 			cache.x = i;
@@ -37,7 +37,7 @@ void init(){
 }
 int check(const cell &target){
 	int ans = 0;
-	if ((x==0) && (y==0)) ans += target.x;
+	if ((x == 0) && (y == 0)) ans += target.x;
 	else ans += std::abs(target.x - x) + std::abs(target.y - y);
 	// x = target.x; y = target.y;
 	return ans += target.x + 1;

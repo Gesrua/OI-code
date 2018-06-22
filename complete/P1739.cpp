@@ -8,10 +8,10 @@ int main(){
 	while (cin >> str){
 		s = 0;
 		bool flag = true;
-		for (int i=0;i<str.size();++i){
+		for (int i = 0; i < str.size(); ++i){
 			if (str[i] == '(') ++s;
 			if (str[i] == ')') --s;
-			if (s < 0) {
+			if (s < 0){
 				flag = false;
 				break;
 			}
