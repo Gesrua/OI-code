@@ -17,8 +17,8 @@ int main(){
 	}
 	// cerr << "flag1\n";
 	std::sort(a, a + n);
-    // for (int i = 0; i < n; ++i){
-	// 	cout << a[i].l << ' ' << a[i].w << endl;
+	// for (int i = 0; i < n; ++i){
+	//  cout << a[i].l << ' ' << a[i].w << endl;
 	// }
 	int t, ans = 0;
 	for (int i = 0; i < n;){
@@ -32,7 +32,7 @@ int main(){
 		for (int j = t; j >= 0; --j){
 			if (!flag[j] && (a[j].l <= tmp.l) && (a[j].w <= tmp.w)){
 				// cerr << j << ' ';
-                tmp = a[j];
+				tmp = a[j];
 				flag[j] = true;
 				++i;
 			}
