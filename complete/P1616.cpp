@@ -9,10 +9,11 @@ int main(){
 	for (i = 0; i < m; i++){
 		std::cin >> s >> v;
 		for (j = 0; j <= t - s; j++){
-			if (dp[j] != -1){
-				dp[j + s] = std::max(dp[j + s], dp[j] + v);
-				ans = std::max(dp[j + s], ans);
-			}
+			// if (dp[j] != -1){
+			// 不需要判断,因为此方案必定不会比最优方案更优
+			dp[j + s] = std::max(dp[j + s], dp[j] + v);
+			ans = std::max(dp[j + s], ans);
+			// }
 		}
 	}
 	std::cout << ans;
