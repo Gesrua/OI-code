@@ -1,9 +1,9 @@
 #include <iostream>
 #include <cstring>
-const int MOD = 1000000007;
 using std::cin; using std::cout; using std::cerr; using std::endl; using std::min; using std::max;
+int MOD = 1000000007;
 struct matrix {
-	int a[110][110], m, n;
+	long long a[110][110], m, n;
 	void init(const int &nM, const int &nN){
 		std::memset(this->a, 0, sizeof(this->a));
 		this->m = nM;
@@ -29,35 +29,31 @@ struct matrix {
 		return ans;
 	}
 } A, B, C;
-std::ostream& operator<<(std::ostream &out, const matrix &s){
+std::ostream& operator<<(std::ostream &out,  matrix &s){
 	for (int i = 1; i <= s.m; ++i){
-		out << '[';
-		for (int j = 1; j <= s.n - 1; ++j){
-			out << s.a[i][j] << ' ';
+		// out << '[';
+		for (int j = 1; j <= s.n; ++j){
+			out << s.a[i][j] % MOD << ' ';
 		}
-		out << s.a[i][s.n];
-		out << "]\n";
+		out << "\n";
 	}
 	return out;
-};
+}
 int main(){
-	long long n;
-	cin >> n;
+	std::ios::sync_with_stdio(false);
+	int n;
+	A.init(1, 2);
+	B.init(2, 2);
+	B.a[1][1] = 0;
+	B.a[2][1] = 1;
+	cin >> B.a[2][2] >> B.a[1][2] >> A.a[1][1] >> A.a[1][2] >> n >> MOD;
+	// MOD = 10000000;
 	if (n <= 2){
-		cout << 1;
+		cout << A.a[1][n];
 		return 0;
 	}
-	n -= 2;
-	A.init(1, 2);
-	A.a[1][1] = A.a[1][2] = 1;
-	B.init(2,2);
-	B.a[1][1] = 0;
-	B.a[2][1] = B.a[2][2] =  B.a[1][2] = 1;
+	n -= 3;
 	C = B;
-	// for (int i = 0; i <= n; ++i){
-	//     A = A * B;
-	//     cerr << A;
-	// }
 	while (n > 0){
 		if (n & 1){
 			C = C * B;
@@ -66,6 +62,7 @@ int main(){
 		n >>= 1;
 	}
 	A = A * C;
-	cout << A.a[1][1] % MOD;
+
+	cout << A.a[1][2] % MOD;
 	return 0;
 }

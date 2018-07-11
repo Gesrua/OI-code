@@ -1,9 +1,9 @@
 #include <iostream>
 #include <cstring>
-const int MOD = 1000000007;
 using std::cin; using std::cout; using std::cerr; using std::endl; using std::min; using std::max;
+const int MOD = 1000000007;
 struct matrix {
-	int a[110][110], m, n;
+	long long a[110][110], m, n;
 	void init(const int &nM, const int &nN){
 		std::memset(this->a, 0, sizeof(this->a));
 		this->m = nM;
@@ -28,44 +28,36 @@ struct matrix {
 		}
 		return ans;
 	}
-} A, B, C;
-std::ostream& operator<<(std::ostream &out, const matrix &s){
+} A, B;
+std::ostream& operator<<(std::ostream &out,  matrix &s){
 	for (int i = 1; i <= s.m; ++i){
-		out << '[';
-		for (int j = 1; j <= s.n - 1; ++j){
-			out << s.a[i][j] << ' ';
+		// out << '[';
+		for (int j = 1; j <= s.n; ++j){
+			out << s.a[i][j] % MOD << ' ';
 		}
-		out << s.a[i][s.n];
-		out << "]\n";
+		out << "\n";
 	}
 	return out;
-};
+}
 int main(){
-	long long n;
-	cin >> n;
-	if (n <= 2){
-		cout << 1;
-		return 0;
+	std::ios::sync_with_stdio(false);
+	int n;
+	long long k;
+	cin >> n >> k;
+	A.init(n, n);
+	for (int i = 1; i <= n; ++i){
+		for (int j = 1; j <= n; ++j)
+			cin >> A.a[i][j];
 	}
-	n -= 2;
-	A.init(1, 2);
-	A.a[1][1] = A.a[1][2] = 1;
-	B.init(2,2);
-	B.a[1][1] = 0;
-	B.a[2][1] = B.a[2][2] =  B.a[1][2] = 1;
-	C = B;
-	// for (int i = 0; i <= n; ++i){
-	//     A = A * B;
-	//     cerr << A;
-	// }
-	while (n > 0){
-		if (n & 1){
-			C = C * B;
+	B = A;
+	--k;
+	while (k > 0){
+		if (k & (long long)1){
+			B = B * A;
 		}
-		B = B * B;
-		n >>= 1;
+		A = A * A;
+		k >>= 1;
 	}
-	A = A * C;
-	cout << A.a[1][1] % MOD;
+	cout << B;
 	return 0;
 }
