@@ -1,45 +1,46 @@
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
-struct node {
+#include <cctype>
+char s[20000001]; int stl;
+inline void rd(int &x){
+	x = 0;
+	for (; !isdigit(s[stl]); ++stl);
+	for (; isdigit(s[stl]); ++stl) x = (x << 3) + (x << 1) + s[stl] - '0';
+}
+int c[5010];
+struct edge {
 	int u, v, w;
-} edge[200001];
-int fa[5001], n, m;
-bool cmp(node a, node b){
-	return a.w < b.w;
-}
-void init(){
-	using namespace std;
-	scanf("%d%d", &n, &m);
-	for (int i = 0; i <= n; ++i){
-		fa[i] = i;
+	bool operator<(edge &b){
+		return w < b.w;
 	}
-	for (int i = 0; i < m; ++i){
-		scanf("%d%d%d", &edge[i].u, &edge[i].v, &edge[i].w);
-	}
-	sort(edge, edge + m, cmp);
-}
+} e[400020];
 int find(int x){
-	if (x == fa[x]) return x;
-	return fa[x] = find(fa[x]);
-}
-void unite(int a, int b){
-	fa[find(a)] = find(b);
-}
-int cnt = 0, sum = 0;
-void kruskal(){
-	for (int i = 0; i < m; ++i){
-		if (find(edge[i].u) != find(edge[i].v)){
-			unite(edge[i].u, edge[i].v);
-			sum += edge[i].w;
-			++cnt;
-		}
-	}
+	return x == c[x] ? x : c[x] = find(c[x]);
 }
 int main(){
-	init();
-	kruskal();
-	if (cnt + 1 < n) std::cout << "orz";
+	int n, m;
+	fread(s, 20000000, 1, stdin);
+	rd(n); rd(m);
+	for (int i = 0; i <= n; ++i){
+		c[i] = i;
+	}
+	for (int i = 0; i < m; ++i){
+		rd(e[i].u);
+		rd(e[i].v);
+		rd(e[i].w);
+	}
+	std::sort(e, e + m);
+	int sum = 0, cnt = 0;
+	for (edge* i = &e[0]; i < &e[m]; ++i){
+		// std::cerr << (i - &e[0]) << ' ';
+		if (find(i->u) == find(i->v)) continue;
+		c[find(i->u)] = find(i->v);
+		sum += i->w;
+		++cnt;
+	}
+	// std::cerr << cnt << std::endl;
+	if (cnt != n - 1) std::cout << "orz";
 	else std::cout << sum;
 	return 0;
 }
