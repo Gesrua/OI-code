@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <cctype>
-#include <queue>
+#include <deque>
 #include <cstring>
 const int INF = 2100000000;
 using std::isdigit; using std::cout; using std::min; using std::cerr; using std::endl;
@@ -28,23 +28,24 @@ bool flag[10100] = {}, book[10100] = {}, map_book[10100];
 int bfs(int x){
 	if (map_book[x]) return 0;
 	std::memset(flag, 0, sizeof(flag));
-	std::queue< int > q;
+	std::deque< int > q;
 	flag[x] = 1;
-	q.push(x);
+	q.push_back(x);
 	int now;
 	map_book[x] = true;
 	bool possi = true;
 	while (!q.empty()){
 		now = q.front();
-		q.pop();
+		q.pop_front();
 		if (flag[now]){
 			for (edge* i = p[now]; i != NULL; i = i->nxt){
 				if (flag[i->v]){
 					possi = false;
-					// goto next;
+                    q.clear();
+                    break;
 				}
 				if (!map_book[i->v]){
-					q.push(i->v);
+					q.push_back(i->v);
 					map_book[i->v] = true;
 				}
 			}
@@ -53,12 +54,13 @@ int bfs(int x){
 				if (map_book[i->v]){
 					if (flag[i->v] != true){
 						possi = false;
-						// goto next;
+                        q.clear();
+                        break;
 					}
 					continue;
 				}
 				map_book[i->v] = true;
-				q.push(i->v);
+				q.push_back(i->v);
 				flag[i->v] = true;
 			}
 		}
@@ -72,40 +74,40 @@ int bfs(int x){
 		}
 	else t1 = INF;
 
-	// bool possib = true;
 	possi = true;
 	std::memset(book, 0, sizeof(book));
 	std::memset(flag, 0, sizeof(flag));
 	book[x] = true;
-	q.push(x);
+	q.push_back(x);
 	while (!q.empty()){
 		now = q.front();
-		q.pop();
+		q.pop_front();
 		if (flag[now]){
 			for (edge* i = p[now]; i != NULL; i = i->nxt){
 				if (flag[i->v]){
 					possi = false;
-					goto next2;
+                    q.clear();
+                    break;
 				}
-				if (!book[i->v]) q.push(i->v);
+				if (!book[i->v]) q.push_back(i->v);
 			}
 		}else{
 			for (edge* i = p[now]; i != NULL; i = i->nxt){
 				if (book[i->v]){
 					if (flag[i->v] != true){
 						possi = false;
-						goto next2;
+                        q.clear();
+                        break;
 					}
 					continue;
 				}
 				book[i->v] = true;
-				q.push(i->v);
+				q.push_back(i->v);
 				flag[i->v] = true;
 			}
 		}
 
 	}
-	next2 : 233;
 	int t2 = 0;
 	if (possi)
 		for (int i = 1; i <= n; ++i){
@@ -138,7 +140,6 @@ int main(){
 			cout << "Impossible";
 			return 0;
 		}
-		// cerr << t << ' ';
 		sum += t;
 	}
 	cout << sum;
