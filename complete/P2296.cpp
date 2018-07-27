@@ -16,8 +16,10 @@ inline void rd(int &x){
 struct edge {
 	int v;
 	edge* nxt;
-	edge(int _v, edge* _nxt) : v(_v), nxt(_nxt) {};
-	edge () : v(0), nxt(NULL) {};
+	edge(int _v, edge* _nxt) : v(_v), nxt(_nxt){
+	};
+	edge () : v(0), nxt(NULL){
+	};
 };
 struct graph {
 	edge e[M];
@@ -43,16 +45,16 @@ int main(){
 		g.addedge(u, v);
 		gt.addedge(v, u);
 	}
-    rd(x); rd(y);
+	rd(x); rd(y);
 	std::queue< int > q;
 	book[y] = true;
-    // for (int i = 1; i <= n; ++i){
-    //     cerr << "pnt = " << i << ' ';
-    //     for (edge* j = g.head[i]; j != NULL; j = j->nxt){
-    //         cerr << j->v << ' ';
-    //     }
-    //     cerr << endl;
-    // }
+	// for (int i = 1; i <= n; ++i){
+	//     cerr << "pnt = " << i << ' ';
+	//     for (edge* j = g.head[i]; j != NULL; j = j->nxt){
+	//         cerr << j->v << ' ';
+	//     }
+	//     cerr << endl;
+	// }
 	q.push(y);
 	int cur, cur_a;
 	while (!q.empty()){
@@ -67,35 +69,35 @@ int main(){
 		}
 	}
 
-    for (int i = 1; i <= n; ++i){
-        flag[i] = true;
-        for (edge* j = g.head[i]; j != NULL; j = j->nxt){
-            if (!book[j->v]){
-                flag[i] = false;
-                break;
-            }
-        }
-        // cerr << endl;
-    }
-	
+	for (int i = 1; i <= n; ++i){
+		flag[i] = true;
+		for (edge* j = g.head[i]; j != NULL; j = j->nxt){
+			if (!book[j->v]){
+				flag[i] = false;
+				break;
+			}
+		}
+		// cerr << endl;
+	}
 
-    std::memset(book, 0, sizeof(book));
+
+	std::memset(book, 0, sizeof(book));
 	q.push(x);
 	std::queue< int > ans;
 	book[x] = true;
 	ans.push(0);
 
-    // for (int i = 1; i <= n; ++i){
-    //     cerr << "pnt = " << i << ' ';
-    //     for (edge* j = g.head[i]; j != NULL; j = j->nxt){
-    //         cerr << j->v << ' ';
-    //     }
-    //     cerr << endl;
-    // }
+	// for (int i = 1; i <= n; ++i){
+	//     cerr << "pnt = " << i << ' ';
+	//     for (edge* j = g.head[i]; j != NULL; j = j->nxt){
+	//         cerr << j->v << ' ';
+	//     }
+	//     cerr << endl;
+	// }
 
 	while (!q.empty()){
 		cur = q.front();
-        // cerr << cur << " ptr ";
+		// cerr << cur << " ptr ";
 		cur_a = ans.front() + 1;
 		ans.pop();
 		q.pop();
@@ -105,13 +107,13 @@ int main(){
 				return 0;
 			}
 			if (!book[i->v] && flag[i->v]){
-                // cerr << i->v << ' ';
+				// cerr << i->v << ' ';
 				q.push(i->v);
 				ans.push(cur_a);
 				book[i->v] = true;
 			}
 		}
-        // cerr << endl;
+		// cerr << endl;
 	}
 	cout << -1;
 	return 0;
