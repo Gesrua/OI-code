@@ -7,10 +7,10 @@ int main(){
 	for (int i = 0; i < n; i++){
 		cin >> a[i];
 	}
-    std::sort(a, a+n);
-    sum = std::unique(a, a+n) - a;
+	std::sort(a, a + n);
+	sum = std::unique(a, a + n) - a;
 	cout << sum << endl;
-    for (int i = 0; i < sum; ++i)
-        cout << a[i] << ' ';
+	for (int i = 0; i < sum; ++i)
+		cout << a[i] << ' ';
 	return 0;
 }
