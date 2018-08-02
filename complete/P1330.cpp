@@ -82,8 +82,8 @@ int bfs(int x){
 			for (edge* i = p[now]; i != NULL; i = i->nxt){
 				if (flag[i->v]){
 					possi = false;
-                    q.clear();
-                    break;
+					q.clear();
+					break;
 				}
 				if (!book[i->v]) q.push_back(i->v);
 			}
@@ -92,8 +92,8 @@ int bfs(int x){
 				if (book[i->v]){
 					if (flag[i->v] != true){
 						possi = false;
-                        q.clear();
-                        break;
+						q.clear();
+						break;
 					}
 					continue;
 				}
