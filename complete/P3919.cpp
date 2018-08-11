@@ -38,20 +38,23 @@ void build(node* cur){
     build(cur->lson);
     build(cur->rson);
 }
-node* modify(node* cur){
-    node* rtn = &t[cnt++];
-    rtn->l = cur->l, rtn->r = cur->r;
-    if (rtn->l == rtn->r){
-        rtn->w = val;
-        return rtn;
+node* modify(node* old){
+    node* newroot = &t[cnt];
+    node* cur = &t[cnt++];
+    while (old->l != old->r){
+        cur->l = old->l, cur->r = old->r,
+        cur->lson = old->lson, cur->rson = old->rson;
+        if (loc <= old->lson->r)
+            cur->lson = &t[cnt],
+            old = old->lson,
+            cur = &t[cnt++];
+        else
+            cur->rson = &t[cnt],
+            old = old->rson,
+            cur = &t[cnt++];
     }
-    if (loc <= cur->lson->r)
-        rtn->rson = cur->rson,
-        rtn->lson = modify(cur->lson);
-    else
-        rtn->lson = cur->lson,
-        rtn->rson = modify(cur->rson);
-    return rtn;
+    cur->l = loc, cur->r = loc, cur->w = val;
+    return newroot;
 }
 void query(node* cur){
     if (cur->l == cur->r){
