@@ -56,7 +56,7 @@ int judge(){
 	int odd = 100, even = 100;
 	for (int i = 1; i < 100; ++i){
 		if (degree[i] & 1) odd = min(i, odd);
-		else even = min(i, even);
+		else if (!degree[i])even = min(i, even);
 	}
 
 	for (int i = 1; i < 100; ++i){
