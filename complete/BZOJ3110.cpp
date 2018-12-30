@@ -35,47 +35,49 @@ inline bool cmp_c(const node& a, const node& b){
 }
 
 
-struct BIT{
-    ui c[N];
-    int lowbit(int x){return x&-x;}
-    void add(int pos, ui x){
-        for (int i = pos; i <= n; i += lowbit(i))
-            c[i] += x;
-    }
-    ui sum(int n){
-        ui ret = 0;
-        for (int i = n; i > 0; i -= lowbit(i))
-            ret += c[i];
-        return ret;
-    }
-    ui query(int l, int r){
-        return sum(r) - sum(l);
-    }
+struct BIT {
+	ui c[N];
+	int lowbit(int x){
+		return x& -x;
+	}
+	void add(int pos, ui x){
+		for (int i = pos; i <= n; i += lowbit(i))
+			c[i] += x;
+	}
+	ui sum(int n){
+		ui ret = 0;
+		for (int i = n; i > 0; i -= lowbit(i))
+			ret += c[i];
+		return ret;
+	}
+	ui query(int l, int r){
+		return sum(r) - sum(l);
+	}
 };
 
-struct EXBIT{
-    BIT t, s;
-    void init(int pos, int add){
-        s.add(pos, add);
-        t.add(pos, (pos-1)*add);
-    }
-    void add(int l, int r, ui x){
-        s.add(l, x);
-        s.add(r+1, -x);
-        t.add(l, (l-1)*x);
-        t.add(r+1, -r*x);
-    }
-    ui _ask(int r){
-        if (r <= 0) return 0;
-        return r*s.sum(r) - t.sum(r);
-    }
-    ui ask(int l, int r){
-        return _ask(r) - _ask(l-1);
-    }
+struct EXBIT {
+	BIT t, s;
+	void init(int pos, int add){
+		s.add(pos, add);
+		t.add(pos, (pos-1)*add);
+	}
+	void add(int l, int r, ui x){
+		s.add(l, x);
+		s.add(r+1, -x);
+		t.add(l, (l-1)*x);
+		t.add(r+1, -r*x);
+	}
+	ui _ask(int r){
+		if (r <= 0) return 0;
+		return r*s.sum(r) - t.sum(r);
+	}
+	ui ask(int l, int r){
+		return _ask(r) - _ask(l-1);
+	}
 } seg;
 
 void solve(int l, int r, int x, int y){
-    if (l > r || x > y) return;
+	if (l > r || x > y) return;
 	if (l == r) {
 		rep (i, x, y) a[i].ans = l;
 		return;
@@ -85,7 +87,7 @@ void solve(int l, int r, int x, int y){
 		if (a[i].opt == 1) {       // add
 			if (a[i].v >= mid) {
 				a[i].c = ++q;
-                seg.add(a[i].l, a[i].r, 1);
+				seg.add(a[i].l, a[i].r, 1);
 			}
 			else a[i].c = ++p;
 		}
@@ -93,7 +95,7 @@ void solve(int l, int r, int x, int y){
 			// L = a[i].l;
 			// R = a[i].r;
 			// ui t = ask(1, 1, n);
-            ui t = seg.ask(a[i].l, a[i].r);
+			ui t = seg.ask(a[i].l, a[i].r);
 			if (t >= (ui)a[i].v) {
 				a[i].c = ++q;
 			}else{
@@ -103,9 +105,9 @@ void solve(int l, int r, int x, int y){
 		}
 
 	}
-    rep (i, x, y)
-        if (a[i].opt == 1 && a[i].v >= mid)       // add
-            seg.add(a[i].l, a[i].r, -1);
+	rep (i, x, y)
+	if (a[i].opt == 1 && a[i].v >= mid)       // add
+		seg.add(a[i].l, a[i].r, -1);
 	std::sort(a+x, a+y+1, cmp_c);
 	solve(l, mid-1, x, x+p-1);
 	solve(mid, r, x+p, y);
@@ -134,13 +136,13 @@ int main(){
 	return 0;
 }
 /*
-struct n2 {
+   struct n2 {
     int lazy, clr, s;
-} t[N*4];
+   } t[N*4];
 
-int L, R;
+   int L, R;
 
-void pushdown(int x, int l, int r){
+   void pushdown(int x, int l, int r){
     if (l == r){
         t[x].clr = 0;
         return;
@@ -161,9 +163,9 @@ void pushdown(int x, int l, int r){
     t[rson].lazy += cur.lazy;
     t[rson].s += (r-mid)*cur.lazy;
     cur.lazy = 0;
-}
+   }
 
-void add(int x, int l, int r){
+   void add(int x, int l, int r){
     if (r < L || R < l) return;
     n2& cur = t[x];
     int lson = x*2, rson = x*2+1;
@@ -180,9 +182,9 @@ void add(int x, int l, int r){
     add(rson, mid+1, r);
     cur.s = t[lson].s + t[rson].s;
     // cerr << x << ' ' << l << ' ' << r << ' ' << cur.s << endl;
-}
+   }
 
-int ask(int x, int l, int r){
+   int ask(int x, int l, int r){
     if (r < L || R < l) return 0;
     n2& cur = t[x];
     int lson = x*2, rson = x*2+1;
@@ -190,9 +192,9 @@ int ask(int x, int l, int r){
     if (L <= l && r <= R) return cur.s;
     int mid = l+r>>1;
     return ask(lson, l, mid) + ask(rson, mid+1, r);
-}
+   }
 
-void solve(int l, int r, int x, int y){
+   void solve(int l, int r, int x, int y){
     // cerr << l << ' ' << r << ' ' << x << ' ' <<  y << endl;
     // rep(i, x, y){
     //     cerr << a[i].id << ' ' << a[i].opt << ' ' << a[i].l << ' ' << a[i].r << ' ' << a[i].v << endl;
@@ -234,5 +236,5 @@ void solve(int l, int r, int x, int y){
     std::sort(a+x, a+y+1, cmp_c);
     solve(l, mid-1, x, x+p-1);
     solve(mid, r, x+p, y);
-}
-*/
+   }
+ */
