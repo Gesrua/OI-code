@@ -31,7 +31,7 @@ edge* begin;
 
 struct edge{
     edge* nxt;
-    int v, cap, flow;
+    int v, cap;
     edge* rev(){
         return begin + ((this-begin)^1);
     }
@@ -72,13 +72,13 @@ bool bfs(){
     while(!q.empty()){
         int u = q.front(); q.pop();
         travese(i, u){
-            if (i->v == t && i->flow < i->cap){
+            if (i->v == t && i->cap > 0){
                 pre[i->v].v = u;
                 pre[i->v].e = i;
                 return 1;
             }
             if (flag[i->v]) continue;
-            if (i->flow < i->cap){
+            if (i->cap > 0){
                 pre[i->v].v = u;
                 pre[i->v].e = i;
                 q.push(i->v);
@@ -104,11 +104,11 @@ int main(){
     while(bfs()){
         int delta = INF;
         for(int i = t; i != s; i = pre[i].v){
-            delta = std::min(delta, pre[i].e->cap - pre[i].e->flow);
+            delta = std::min(delta, pre[i].e->cap);
         }
         for(int i = t; i != s; i = pre[i].v){
-            pre[i].e->flow += delta;
-            pre[i].e->rev()->flow -= delta;
+            pre[i].e->cap -= delta;
+            pre[i].e->rev()->cap += delta;
         }
         maxflow += delta;
     }
