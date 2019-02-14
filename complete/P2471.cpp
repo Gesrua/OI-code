@@ -112,46 +112,39 @@ void init() {
 }
 
 void solve() {
-    int from, to;
-    cin >> from >> to;
-    from += FIX;
-    to += FIX;
-    if (from + 1 == to) {
-        from = T.get(from), to = T.get(to);
-        if (from == 0 || to == 0)
+    int l, r;
+    cin >> l >> r;
+    l += FIX;
+    r += FIX;
+    int s = T.get(l), e = T.get(r);
+    if (l + 1 == r)
+        if (s == 0 || e == 0)
             cout << "maybe\n";
-        else if (from < to)
+        else if (s < e)
             cout << "false\n";
         else
             cout << "true\n";
-
-        return;
-    }
-    int f = T.get(from), l = T.get(to), pm = T.qmax(from + 1, to - 1);
-    if (f == 0 && l == 0) {
-        cout << "maybe\n";
-        return;
-    }
-    if (f == 0) {
-        if (pm >= l)
+    else {
+        int max = T.qmax(l + 1, r - 1), min = T.qmin(l + 1, r - 1);
+        if (s == 0)
+            if (e == 0)
+                cout << "maybe\n";
+            else if (max >= e)
+                cout << "false\n";
+            else
+                cout << "maybe\n";
+        else if (e == 0)
+            if (max >= s)
+                cout << "false\n";
+            else
+                cout << "maybe\n";
+        else if (s < e || max >= e)
             cout << "false\n";
-        else
+        else if (min == 0)
             cout << "maybe\n";
-        return;
-    }
-    if (l == 0) {
-        if (pm >= f)
-            cout << "false\n";
         else
-            cout << "maybe\n";
-        return;
+            cout << "true\n";
     }
-    if (f < l || pm >= l)
-        cout << "false\n";
-    else if (T.qmin(from + 1, to - 1) == 0)
-        cout << "maybe\n";
-    else
-        cout << "true\n";
 }
 
 int main() {
