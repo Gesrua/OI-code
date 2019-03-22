@@ -83,10 +83,8 @@ struct Dinic {
         int flow = 0, f;
         while (bfs()) {
             // cerr << "bfsed" << endl;
-            while ((f = dfs(&g[s], inf)) > 0) {
-                flow += f;
-                // cerr << "dfsed " << flow << endl;
-            }
+            flow += dfs(&g[s], inf);
+            // cerr << "dfsed " << flow << endl;
         }
         return flow;
     }
