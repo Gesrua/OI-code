@@ -1,105 +1,105 @@
-// Segment tree is my nightmare
+#include <algorithm>
+#include <cassert>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
+#include <deque>
 #include <iostream>
+#include <map>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string>
+#include <utility>
+#include <vector>
+#define rep(i, l, r) for (int i = (l); i <= (r); ++i)
+#define per(i, l, r) for (int i = (l); i >= (r); --i)
 using std::cerr;
 using std::cin;
 using std::cout;
 using std::endl;
-using std::max;
-using std::min;
-const int NMAX = 100000;
-const int MMAX = 100000;
-int a[NMAX + 10];
-long long T[NMAX * 4] = {}, lazy[NMAX * 4] = {};
-int L, R, ADD;
-void build(int idx, int l, int r) {
-    // cerr << idx << ' ' << l << ' ' << r << endl;
-    if (l == r) {
-        T[idx] = a[l];
-        // cerr << l << ' ' << r << ' ' << T[idx] << endl;
-        return;
-    }
-    int mid = (l + r) >> 1;
-    build((idx << 1), l, mid);
-    build((idx << 1) | 1, mid + 1, r);
-    T[idx] = T[idx << 1] + T[(idx << 1) | 1];
-    // cerr << l << ' ' << r << ' ' << T[idx] << endl;
+using std::make_pair;
+using std::pair;
+typedef pair<int, int> pii;
+typedef long long ll;
+typedef unsigned int ui;
+
+const int N = 100000;
+
+struct Node {
+    ll sum, tag;
+    int l, r;
+    Node *ls, *rs;
+    inline int len();
+    void maintain();
+    void pushdown();
+    ll query();
+    void add();
+    Node *build(int, int);
+    void print();
+};
+Node T[N * 4];
+Node *null;
+int cnt = 1, L, R, X;
+
+int Node::len() { return r - l + 1; }
+void Node::maintain() { sum = ls->sum + rs->sum; }
+void Node::pushdown() {
+    ls->tag += tag, rs->tag += tag;
+    ls->sum += ls->len() * tag, rs->sum += rs->len() * tag;
+    tag = 0;
+    null->sum = null->tag = 0;
 }
-void print(int idx, int l, int r) {
-    if (l == r) {
-        cerr << l << ' ' << r << ' ' << T[idx] << ' ' << lazy[idx] << endl;
-        return;
-    }
-    int mid = (l + r) >> 1;
-    print(idx << 1, l, mid);
-    print((idx << 1) | 1, mid + 1, r);
-    cerr << l << ' ' << r << ' ' << T[idx] << ' ' << lazy[idx] << endl;
+ll Node::query() {
+    if (L <= l && r <= R) return sum;
+    if (r < L || R < l) return 0;
+    pushdown();
+    return ls->query() + rs->query();
 }
-void add(int idx, int l, int r) {
-    if (R < l || r < L) {
-        return;
-    }
-    if (l == r) {
-        T[idx] += ADD;
-        return;
-    }
-    if (L <= l && r <= R) {
-        lazy[idx] += ADD;
-        T[idx] += (r - l + 1) * ADD;
-        return;
-    }
-
-    int mid = (l + r) >> 1;
-    int lson = (idx << 1), rson = (idx << 1) | 1;
-
-    // lazy 下放
-
-    lazy[lson] += lazy[idx];
-    T[lson] += (mid - l + 1) * lazy[idx];
-    lazy[rson] += lazy[idx];
-    T[rson] += (r - mid) * lazy[idx];
-    lazy[idx] = 0;
-
-    add(lson, l, mid);
-    add(rson, mid + 1, r);
-    T[idx] = T[lson] + T[rson];
-    return;
+void Node::add() {
+    if (r < L || R < l) return;
+    if (L <= l && r <= R)
+        tag += X, sum += len() * X;
+    else
+        pushdown(), ls->add(), rs->add(), maintain();
 }
-long long query(int idx, int l, int r) {
-    if (R < l || r < L) {
-        return 0;
+Node *Node::build(int l, int r) {
+    // cerr << l << ' ' << r << endl;
+    Node *ret = &T[cnt++];
+    ret->l = l, ret->r = r, ret->ls = ret->rs = null;
+    if (l == r)
+        cin >> ret->sum;
+    else {
+        int mid = (l + r) / 2;
+        ret->ls = build(l, mid), ret->rs = build(mid + 1, r);
+        ret->maintain();
     }
-    if (L <= l && r <= R) {
-        return T[idx];
-    }
-    int mid = (l + r) >> 1;
-    int lson = (idx << 1), rson = (idx << 1) | 1;
-
-    // lazy 下放
-
-    lazy[lson] += lazy[idx];
-    T[lson] += (mid - l + 1) * lazy[idx];
-    lazy[rson] += lazy[idx];
-    T[rson] += (r - mid) * lazy[idx];
-    lazy[idx] = 0;
-
-    return query(lson, l, mid) + query(rson, mid + 1, r);
+    return ret;
 }
+
+void Node::print() {
+    if (this == null) return;
+    cerr << l << ' ' << r << ' ' << sum << ' ' << tag << endl;
+    ls->print(), rs->print();
+}
+
 int main() {
-    int N, M;
     std::ios::sync_with_stdio(false);
-    cin >> N >> M;
-    for (int i = 1; i <= N; ++i) cin >> a[i];
-    build(1, 1, N);
-    int opt;
-    for (int i = 1; i <= M; ++i) {
-        cin >> opt;
+    cout.tie(0);
+    int n, m;
+    null = T;
+    null->ls = null->rs = null;
+    cin >> n >> m;
+    Node *rt = null->build(1, n);
+    L = 1, R = n;
+    while (m--) {
+        int opt;
+        cin >> opt >> L >> R;
         if (opt == 1) {
-            cin >> L >> R >> ADD;
-            add(1, 1, N);
-        } else {
-            cin >> L >> R;
-            cout << query(1, 1, N) << endl;
-        }
+            cin >> X;
+            rt->add();
+        } else
+            cout << rt->query() << '\n';
     }
     return 0;
 }
