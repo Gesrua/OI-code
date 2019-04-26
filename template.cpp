@@ -24,7 +24,7 @@ typedef pair<int, int> pii;
 typedef long long ll;
 typedef unsigned int ui;
 int main() {
-#ifndef ONLINE_JUDGE
+#ifdef LOCAL
     freopen("input", "r", stdin);
 #endif
     std::ios::sync_with_stdio(false);
