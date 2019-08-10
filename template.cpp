@@ -62,6 +62,7 @@
 #define rep(i, l, r) for (int i = (l); i <= (r); ++i)
 #define per(i, l, r) for (int i = (l); i >= (r); --i)
 using std::cerr;
+using std::endl;
 using std::make_pair;
 using std::pair;
 typedef pair<int, int> pii;
