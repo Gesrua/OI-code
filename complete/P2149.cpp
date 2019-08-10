@@ -133,7 +133,7 @@ int main() {
             // if (A.topo[u] >= A.topo[v] || B.topo[u] >= B.topo[v] ||
             //     A.dis[0][u] != B.dis[0][u])
             //     continue;
-            ans = max(ans, min(A.dist(u, v), B.dist(u, v)));
+            ans = max(ans, A.dist(u, v));
             // if (ans < A.dis[0][t1] - A.dis[0][u] - A.dis[1][v])
             // cerr << u << ' ' << v << endl;
             // ans = std::max(ans,
