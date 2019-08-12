@@ -77,7 +77,7 @@ struct IO {
     char pbuf[MAXSIZE], *pp;
 #if DEBUG
 #else
-    IO() : p1(buf), pp(pbuf) { p2 = buf + fread(buf, 1, MAXSIZE, stdin); }
+    IO() : p1(buf), p2(buf), pp(pbuf) {}
     ~IO() { fwrite(pbuf, 1, pp - pbuf, stdout); }
 #endif
     inline char gc() {
@@ -87,9 +87,7 @@ struct IO {
         if (p1 == p2) p2 = (p1 = buf) + fread(buf, 1, MAXSIZE, stdin);
         return p1 == p2 ? -1 : *p1++;
     }
-    inline bool blank(char ch) {
-        return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
-    }
+    inline bool blank(char ch) { return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t'; }
     template <class T>
     inline void read(T &x) {
         register double tmp = 1;
@@ -100,8 +98,7 @@ struct IO {
             if (ch == '-') sign = 1;
         for (; isdigit(ch); ch = gc()) x = x * 10 + (ch - '0');
         if (ch == '.')
-            for (ch = gc(); isdigit(ch); ch = gc())
-                tmp /= 10.0, x += tmp * (ch - '0');
+            for (ch = gc(); isdigit(ch); ch = gc()) tmp /= 10.0, x += tmp * (ch - '0');
         if (sign) x = -x;
     }
     inline void read(char *s) {
@@ -132,6 +129,9 @@ struct IO {
             sta[top++] = x % 10, x /= 10;
         } while (x);
         while (top) push(sta[--top] + '0');
+    }
+    inline void write(const char *s) {
+        while (*s != '\0') push(*(s++));
     }
     template <class T>
     inline void write(T x, char lastChar) {
