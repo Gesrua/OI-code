@@ -68,6 +68,7 @@ using std::pair;
 typedef pair<int, int> pii;
 typedef long long ll;
 typedef unsigned int ui;
+typedef unsigned long long ull;
 
 // #define DEBUG 1  //调试开关
 struct IO {
