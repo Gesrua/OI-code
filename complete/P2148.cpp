@@ -25,6 +25,23 @@ typedef long long ll;
 typedef unsigned int ui;
 typedef unsigned long long ull;
 
+// std::map<pii, int> sg;
+
+// int calc(pii c) {
+//     if (sg.count(c)) return sg[c];
+//     std::vector<int> s;
+//     rep(i, 1, c.first - 1) s.push_back(calc({i, c.first - i}));
+//     rep(i, 1, c.second - 1) s.push_back(calc({i, c.second - i}));
+//     std::sort(s.begin(), s.end());
+//     s.erase(std::unique(s.begin(), s.end()), s.end());
+//     int lst = -1;
+//     for (auto i : s) {
+//         if (i != lst + 1) return sg[c] = lst + 1;
+//         lst = i;
+//     }
+//     return sg[c] = lst + 1;
+// }
+
 #define c(x, p) (x % p ? x % p : p)
 
 int sg(ui x, ui y) {
