@@ -94,14 +94,6 @@ int main() {
     while(m--){
         int u, x; cin >> u >> x;
         g[u][1] = g[u][1] - c[u] + x;
-        if (u == top[u]){
-            g[fa[u]][0] -= std::max(f[u][0], f[u][1]);
-        }
-        f[u][1] = f[u][1] - c[u] + x;
-        if (u == top[u]){
-            g[fa[u]][0] += std::max(f[u][0], f[u][1]);
-            update_seg(fa[u]);
-        }
         c[u] = x;
         for(; u; u = fa[top[u]]){
             update_seg(u);
@@ -109,8 +101,8 @@ int main() {
             g[fa[top[u]]][1] -= f[top[u]][0];
             g[fa[top[u]]][0] -= std::max(f[top[u]][0], f[top[u]][1]);
 
-            f[top[u]][1] = std::max(q.a[0][0] + f[end[top[u]]][1], q.a[0][1] + f[end[top[u]]][0]);
-            f[top[u]][0] = std::max(q.a[1][0] + f[end[top[u]]][1], q.a[1][1] + f[end[top[u]]][0]);
+            f[top[u]][1] = std::max(q.a[0][0] + c[end[top[u]]], q.a[0][1] + 0);
+            f[top[u]][0] = std::max(q.a[1][0] + c[end[top[u]]], q.a[1][1] + 0);
 
             g[fa[top[u]]][1] += f[top[u]][0];
             g[fa[top[u]]][0] += std::max(f[top[u]][0], f[top[u]][1]);
