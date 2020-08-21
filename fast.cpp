@@ -134,11 +134,30 @@ struct IO {
     inline void write(const char *s) {
         while (*s != '\0') push(*(s++));
     }
+    inline void write(const char c){
+        push(c);
+    }
     template <class T>
     inline void write(T x, char lastChar) {
         write(x), push(lastChar);
     }
 } io;
+
+struct Cin{
+    template <class T>
+    const Cin& operator>>(T &x) const {
+        io.read(x);
+        return *this;
+    }
+} cin;
+
+struct Cout{
+    template <class T>
+    const Cout& operator<<(T x) const {
+        io.write(x);
+        return *this;
+    }
+} cout;
 
 int main() {
 #ifdef LOCAL
