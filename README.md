@@ -2,8 +2,6 @@
 
 这里是代码仓库，做了的题基本都在这
 
-如果有写错欢迎嘲讽
-
 - LG, LGT, LGP 是 [洛谷](https://www.luogu.org/)
 - CC 是 [CodeChef](http://www.codechef.com/)
 - CF 是 [Codeforces](https://codeforces.com/)
@@ -12,4 +10,4 @@
 - Comet 是 [CometOJ](https://cometoj.com/)
 - [POJ](http://poj.org/)
 - [BZOJ](https://www.lydsy.com/)
-- [UVa](https://uva.onlinejudge.org/) ~~是不是快凉了啊~~
+- [UVa](https://uva.onlinejudge.org/)
